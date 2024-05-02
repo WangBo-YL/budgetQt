@@ -9,10 +9,14 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    BudgetClass.cpp \
+    SavingsClass.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    BudgetClass.h \
+    SavingsClass.h \
     mainwindow.h
 
 FORMS += \
@@ -22,3 +26,10 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+
+
+win32: LIBS += -L$$PWD/sqlite3/ -lsqlite3
+
+INCLUDEPATH += $$PWD/sqlite3
+DEPENDPATH += $$PWD/sqlite3
