@@ -13,7 +13,6 @@
 #include <QStandardItemModel>
 #include <QInputDialog>
 #include "BudgetClass.h"
-#include "SavingsClass.h"
 
 
 QT_BEGIN_NAMESPACE
