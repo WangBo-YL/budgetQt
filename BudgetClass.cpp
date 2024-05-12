@@ -11,42 +11,42 @@
 
 //Database calls.
 //Start a transaction in the database. Returns sqlite ok.
-int Budget::startTransaction(sqlite3* db) throw(std::runtime_error) {
+int Budget::startTransaction(sqlite3* db) noexcept(false) {
     std::string statement = "BEGIN TRANSACTION; ";
 
     //Sending statement to database.
     if (sqlite3_exec(db, statement.c_str(), NULL, NULL, NULL) != SQLITE_OK) {
         std::string error = "There was an error beginging transaction. ";
-        error + sqlite3_errmsg(db);
-        error + "\n";
+        error += sqlite3_errmsg(db);
+        error += "\n";
         throw std::runtime_error(error);
     }
     return SQLITE_OK;
 }//End of startTransaction
 
 //Rolls database back if transaction faild. Returns sqlite ok.
-int Budget::rollback(sqlite3* db) throw(std::runtime_error) {
+int Budget::rollback(sqlite3* db) noexcept(false) {
     std::string statement = "ROLLBACK; ";
 
     //Sending statement to database
     if (sqlite3_exec(db, statement.c_str(), NULL, NULL, NULL) != SQLITE_OK) {
         std::string error = "There was an error rolling back database. ";
-        error + sqlite3_errmsg(db);
-        error + "\n";
+        error += sqlite3_errmsg(db);
+        error += "\n";
         throw std::runtime_error(error);;
     }
     return SQLITE_OK;
 }//End of rollback
 
 //Commits changes if everything went fine. Returns sqlite ok.
-int Budget::commit(sqlite3* db) throw(std::runtime_error) {
+int Budget::commit(sqlite3* db) noexcept(false) {
     std::string statement = "COMMIT; ";
 
     //Sending statement to database
     if (sqlite3_exec(db, statement.c_str(), NULL, NULL, NULL) != SQLITE_OK) {
         std::string error = "There was an error commiting to database. ";
-        error + sqlite3_errmsg(db);
-        error + "\n";
+        error += sqlite3_errmsg(db);
+        error += "\n";
         throw std::runtime_error(error);
         rollback(db);
     }
@@ -54,7 +54,7 @@ int Budget::commit(sqlite3* db) throw(std::runtime_error) {
 }//End of commit
 
 //Runs a simple query that needs no output. returns 0 for failed or 1 for success.
-int Budget::simpleQuery(sqlite3* db, std::string query) throw(std::runtime_error) {
+int Budget::simpleQuery(sqlite3* db, std::string query) noexcept(false) {
 
     //Running query and returning 0 if bad, 1 if good.
     if (sqlite3_exec(db, query.c_str(), NULL, NULL, NULL) == SQLITE_OK) {
@@ -70,7 +70,7 @@ int Budget::simpleQuery(sqlite3* db, std::string query) throw(std::runtime_error
 }//End of simpleQuery.
 
 //Returns budget id as a int. Needs budget name. Tested Working**************
-int Budget::getBudgetID(std::string budgetName) throw(std::invalid_argument, std::runtime_error) {
+int Budget::getBudgetID(std::string budgetName) noexcept(false) {
     //Data fields.
     std::string query = "";//Query to send to database.
     sqlite3* db;//My database file.
@@ -117,7 +117,7 @@ int Budget::getBudgetID(std::string budgetName) throw(std::invalid_argument, std
 }//End of getBudgetID
 
 //Returns a vector of item id's. Needs a budget name. Tested Working**************
-std::vector<int> Budget::getItemIDList(std::string budgetName) throw(std::invalid_argument, std::runtime_error) {
+std::vector<int> Budget::getItemIDList(std::string budgetName) noexcept(false) {
     //Data fields.
     std::string query = "";//Query to send to database.
     sqlite3* db;//My database file.
@@ -170,7 +170,7 @@ std::vector<int> Budget::getItemIDList(std::string budgetName) throw(std::invali
 }//End of getItemIDList
 
 //Returns a id number for item. Tested Working**********
-int Budget::getItemID(std::string itemName) throw(std::invalid_argument, std::runtime_error) {
+int Budget::getItemID(std::string itemName) noexcept(false) {
     //Data fields.
     std::string query = "";//Query to send to database.
     sqlite3* db;//My database file.
@@ -186,8 +186,8 @@ int Budget::getItemID(std::string itemName) throw(std::invalid_argument, std::ru
     if (sqlite3_open_v2("dataBase.db", &db, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK) {
         sqlite3_close(db);
         std::string error = "Error opening database. ";
-        error + sqlite3_errmsg(db);
-        error + "\n";
+        error += sqlite3_errmsg(db);
+        error += "\n";
         throw std::runtime_error(error);
     }
     else {
@@ -198,8 +198,8 @@ int Budget::getItemID(std::string itemName) throw(std::invalid_argument, std::ru
         if (sqlite3_prepare_v2(db, query.c_str(), -1, &qres, NULL) != SQLITE_OK) {
             sqlite3_finalize(qres);
             std::string error = "There was an error in item id query. ";
-            error + sqlite3_errmsg(db);
-            error + "\n";
+            error += sqlite3_errmsg(db);
+            error += "\n";
             throw std::runtime_error(error);
         }
         else {
@@ -227,7 +227,7 @@ Budget::~Budget() {
 
 //Accessors
 //Returns double for budget total. Needs budget name. Tested Working*********
-double Budget::getBudgetTotal(std::string budgetName) throw(std::invalid_argument, std::runtime_error) {
+double Budget::getBudgetTotal(std::string budgetName) noexcept(false) {
     //Data fields.
     std::string query = "";//Query to send to database.
     sqlite3* db;//My database file.
@@ -274,7 +274,7 @@ double Budget::getBudgetTotal(std::string budgetName) throw(std::invalid_argumen
 }//End of getTotal
 
 //Returns double for category total. Needs category name. Tested Working***********
-double Budget::getCategoryTotal(std::string categoryName) throw(std::invalid_argument, std::runtime_error) {
+double Budget::getCategoryTotal(std::string categoryName) noexcept(false) {
     //Data fields.
     std::string query = "";//Query to send to database.
     sqlite3* db;//My database file.
@@ -321,7 +321,7 @@ double Budget::getCategoryTotal(std::string categoryName) throw(std::invalid_arg
 }//End of getTotal
 
 //Returns double for item total. Needs item name. Tested Working******
-double Budget::getItemTotal(std::string itemName) throw(std::invalid_argument, std::runtime_error) {
+double Budget::getItemTotal(std::string itemName) noexcept(false) {
     //Data fields.
     std::string query = "";//Query to send to database.
     sqlite3* db;//My database file.
@@ -368,7 +368,7 @@ double Budget::getItemTotal(std::string itemName) throw(std::invalid_argument, s
 }//End of getTotal
 
 //Returns double for item cap. Needs item name. Tested Working******
-double Budget::getItemCap(std::string itemName) throw(std::invalid_argument, std::runtime_error) {
+double Budget::getItemCap(std::string itemName) noexcept(false) {
     //Data fields.
     std::string query = "";//Query to send to database.
     sqlite3* db;//My database file.
@@ -415,7 +415,7 @@ double Budget::getItemCap(std::string itemName) throw(std::invalid_argument, std
 }//End of getTotal
 
 //Returns vector of strings that are budget names. Tested Working********************
-std::vector<std::string> Budget::getBudgetList() throw(std::runtime_error) {
+std::vector<std::string> Budget::getBudgetList() noexcept(false) {
     //Data fields
     std::string query = "";//Query to send to database.
     sqlite3* db;//My database file.
@@ -457,7 +457,7 @@ std::vector<std::string> Budget::getBudgetList() throw(std::runtime_error) {
 }//End of getBudgets
 
 //Returns a list of category name strings. Needs a budget name.  Tested Working************
-std::vector<std::string> Budget::getCategoryList(std::string budgetName) throw(std::invalid_argument, std::runtime_error) {
+std::vector<std::string> Budget::getCategoryList(std::string budgetName) noexcept(false) {
     //Data fields
     std::string query = "";//Query to send to database.
     sqlite3* db;//My database file.
@@ -503,7 +503,7 @@ std::vector<std::string> Budget::getCategoryList(std::string budgetName) throw(s
 }//End of getCategoryList
 
 //Returns vector of item structs. Needs budget name. Tested Working****************
-std::vector<Budget::item> Budget::getItemList(std::string budgetName) throw(std::invalid_argument, std::runtime_error) {
+std::vector<Budget::item> Budget::getItemList(std::string budgetName) noexcept(false) {
 
     //Data Fields
     std::string query = "";//Query to send to database.
@@ -561,7 +561,7 @@ std::vector<Budget::item> Budget::getItemList(std::string budgetName) throw(std:
 }//End of getItems
 
 //Returns vector of doubles that are transaction amounts. Needs a budget name. Tested Working********************
-std::vector<double> Budget::getBudgetTransactionsList(std::string budgetName) throw(std::invalid_argument, std::runtime_error) {
+std::vector<double> Budget::getBudgetTransactionsList(std::string budgetName) noexcept(false) {
     //Data fields
     std::string query = "";//Query to send to database.
     sqlite3* db;//My database file.
@@ -581,7 +581,7 @@ std::vector<double> Budget::getBudgetTransactionsList(std::string budgetName) th
         //Getting list of item id numbers that belong to this budget.
         itemIDList = this->getItemIDList(budgetName);
 
-        for (int i = 0; i < itemIDList.size(); i++) {
+        for (int i = 0; i < static_cast<int>(itemIDList.size()); i++) {
             //Building query
             query = "SELECT total FROM transactions WHERE item_id = " + std::to_string(itemIDList[i]) + "; ";
 
@@ -609,7 +609,7 @@ std::vector<double> Budget::getBudgetTransactionsList(std::string budgetName) th
 }//End of getBudgets
 
 //Returns vector of doubles that are transaction amounts. Needs a item name. Tested Working********************
-std::vector<double> Budget::getItemTransactionsList(std::string itemName) throw(std::invalid_argument, std::runtime_error) {
+std::vector<double> Budget::getItemTransactionsList(std::string itemName) noexcept(false) {
     //Data fields
     std::string query = "";//Query to send to database.
     sqlite3* db;//My database file.
@@ -655,7 +655,7 @@ std::vector<double> Budget::getItemTransactionsList(std::string itemName) throw(
 
 //Mutators
 //Needs a budget name, budget starting total, and vector of items. Tested Working*************
-void Budget::addBudget(std::string budgetName, double total, std::vector<Budget::item>& items) throw(std::invalid_argument, std::runtime_error) {
+void Budget::addBudget(std::string budgetName, double total, std::vector<Budget::item>& items) noexcept(false) {
     //Data fields
     std::string dataBaseString = "";//String being used for database statement.
     sqlite3* db;//My database file.
@@ -695,7 +695,7 @@ void Budget::addBudget(std::string budgetName, double total, std::vector<Budget:
         }
 
         //Checking struct list data integrity.
-        for (int i = 0; i < items.size(); i++) {
+        for (int i = 0; i < static_cast<int>(items.size()); i++) {
             if (items[i].name.empty()) {
                 throw std::invalid_argument("Item name cannot be empty.\n");
             }
@@ -708,7 +708,7 @@ void Budget::addBudget(std::string budgetName, double total, std::vector<Budget:
         }
 
         //Loop for building statement and inserting budget items.
-        for (int i = 0; i < items.size(); i++) {
+        for (int i = 0; i < static_cast<int>(items.size()); i++) {
             //Building string for budget item insertion.
             dataBaseString = "INSERT INTO item (item_name, cap, total, budget_id) VALUES('";
             dataBaseString += items[i].name + "', ";
@@ -731,7 +731,7 @@ void Budget::addBudget(std::string budgetName, double total, std::vector<Budget:
 }//End of addBudget
 
 //Needs a budget name. Tested Working**************
-void Budget::deleteBudget(std::string name) throw(std::invalid_argument, std::runtime_error) {
+void Budget::deleteBudget(std::string name) noexcept(false) {
     //Data fields
     std::string statement = "";//String being used for database statement.
     sqlite3* db;//My database file.
@@ -762,7 +762,7 @@ void Budget::deleteBudget(std::string name) throw(std::invalid_argument, std::ru
         this->startTransaction(db);
 
         //Loop to change all related transactions to NULL budget id.
-        for (int i = 0; i < itemIDList.size(); i++) {
+        for (int i = 0; i < static_cast<int>(itemIDList.size()); i++) {
             //Building statement
             statement = "UPDATE transactions SET item_id = NULL WHERE item_id = ";
             statement += std::to_string(itemIDList[i]) + "; ";
@@ -793,7 +793,7 @@ void Budget::deleteBudget(std::string name) throw(std::invalid_argument, std::ru
 }//End of deleteBudget
 
 //Needs a budget name and item struct. Tested Working*****************
-void Budget::addItem(std::string budgetName, Budget::item newItem) throw(std::invalid_argument, std::runtime_error) {
+void Budget::addItem(std::string budgetName, Budget::item newItem) noexcept(false) {
     //Datafields
     std::string statement = "";//String being used for database statement.
     sqlite3* db;//My database file.
@@ -838,7 +838,7 @@ void Budget::addItem(std::string budgetName, Budget::item newItem) throw(std::in
 }//End of addItem
 
 //Deletes item from table and sets all related transactions to NULL item_id. Needs item name. Tested Working*****************
-void Budget::deleteItem(std::string itemName) throw(std::invalid_argument, std::runtime_error) {
+void Budget::deleteItem(std::string itemName) noexcept(false) {
     //Datafields
     std::string statement = "";//String being used for database statement.
     sqlite3* db;//My database file.
@@ -883,7 +883,7 @@ void Budget::deleteItem(std::string itemName) throw(std::invalid_argument, std::
 }//End of deleteItem
 
 //Adds funds to total of a budget. Needs budget name and amount to add. Test Working***************
-void Budget::addFunds(std::string name, double amount) throw(std::invalid_argument, std::runtime_error) {
+void Budget::addFunds(std::string name, double amount) noexcept(false) {
     //Data fields.
     std::string statement = "";//String being used for database statement.
     sqlite3* db;//My database file.
@@ -936,7 +936,7 @@ void Budget::addFunds(std::string name, double amount) throw(std::invalid_argume
     }//End of addFunds
 
 //Adds a transaction. Needs a category name, item name, budget name, and amount of transaction. Tested Working***************
-void Budget::addExpense(std::string catName, std::string itemName, std::string budgetName, double amount) throw(std::invalid_argument, std::runtime_error) {
+void Budget::addExpense(std::string catName, std::string itemName, std::string budgetName, double amount) noexcept(false) {
     //Data fields.
     std::string statement = "";//String being used for database statement.
     sqlite3* db;//My database file.
@@ -1024,7 +1024,7 @@ void Budget::addExpense(std::string catName, std::string itemName, std::string b
 }//End of addExpense
 
 //Adds a category. Needs a category name and a budget name it belongs to.
-void Budget::addCategory(std::string catName, std::string budgetName) throw(std::invalid_argument, std::runtime_error) {
+void Budget::addCategory(std::string catName, std::string budgetName) noexcept(false) {
     //Data fields
     std::string statement = "";//String being used for database statement.
     sqlite3* db;//My database file.
@@ -1060,7 +1060,7 @@ void Budget::addCategory(std::string catName, std::string budgetName) throw(std:
 }//End of addCategory
 
 //Deletes a category. Needs a category name. Tested Working*************
-void Budget::deleteCategory(std::string catName) throw(std::invalid_argument, std::runtime_error) {
+void Budget::deleteCategory(std::string catName) noexcept(false) {
     //Data fields
     std::string statement = "";//String being used for database statement.
     sqlite3* db;//My database file.

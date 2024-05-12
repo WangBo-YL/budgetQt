@@ -1,5 +1,5 @@
 QT       += core gui
-
+QT += sql
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
@@ -33,3 +33,6 @@ win32: LIBS += -L$$PWD/sqlite3/ -lsqlite3
 
 INCLUDEPATH += $$PWD/sqlite3
 DEPENDPATH += $$PWD/sqlite3
+
+DISTFILES += \
+    dataBase.db

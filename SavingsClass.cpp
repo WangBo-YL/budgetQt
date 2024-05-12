@@ -10,7 +10,7 @@
 
 //Database calls.
 //Start a transaction in the database. Returns sqlite ok.
-int Savings::startTransaction(sqlite3* db) throw(std::runtime_error){
+int Savings::startTransaction(sqlite3* db) noexcept(false){
     std::string statement = "BEGIN TRANSACTION; ";
 
     //Sending statement to database.
@@ -24,7 +24,7 @@ int Savings::startTransaction(sqlite3* db) throw(std::runtime_error){
 }//End of startTransaction
 
 //Rolls database back if transaction faild. Returns sqlite ok.
-int Savings::rollback(sqlite3* db) throw(std::runtime_error) {
+int Savings::rollback(sqlite3* db) noexcept(false) {
     std::string statement = "ROLLBACK; ";
 
     //Sending statement to database
@@ -38,7 +38,7 @@ int Savings::rollback(sqlite3* db) throw(std::runtime_error) {
 }//End of rollback
 
 //Commits changes if everything went fine. Returns sqlite ok.
-int Savings::commit(sqlite3* db) throw(std::runtime_error) {
+int Savings::commit(sqlite3* db) noexcept(false) {
     std::string statement = "COMMIT; ";
 
     //Sending statement to database
@@ -53,7 +53,7 @@ int Savings::commit(sqlite3* db) throw(std::runtime_error) {
 }//End of commit
 
 //Runs a simple query that needs no output. returns 0 for failed or 1 for success.
-int Savings::simpleQuery(sqlite3* db, std::string query) throw(std::runtime_error) {
+int Savings::simpleQuery(sqlite3* db, std::string query) noexcept(false) {
 
     //Running query and returning 0 if bad, 1 if good.
     if (sqlite3_exec(db, query.c_str(), NULL, NULL, NULL) == SQLITE_OK) {
@@ -69,7 +69,7 @@ int Savings::simpleQuery(sqlite3* db, std::string query) throw(std::runtime_erro
 }//End of simpleQuery.
 
 //Returns savings id as a int. Needs savings name. Tested Working************
-int Savings::getSavingsID(std::string savingsName) throw(std::invalid_argument, std::runtime_error) {
+int Savings::getSavingsID(std::string savingsName) noexcept(false) {
     //Data fields.
     std::string query = "";//Query to send to database.
     sqlite3* db;//My database file.
@@ -128,7 +128,7 @@ Savings::~Savings() {
 
 //Accessors
 //Returns a double for goal. Needs a savings name. Tested Working**************
-double Savings::getGoal(std::string savingsName) throw(std::invalid_argument, std::runtime_error) {
+double Savings::getGoal(std::string savingsName) noexcept(false) {
     //Data fields.
     std::string query = "";//Query to send to database.
     sqlite3* db;//My database file.
@@ -175,7 +175,7 @@ double Savings::getGoal(std::string savingsName) throw(std::invalid_argument, st
 }//End of getGoal
 
 //Returns a double for total. Needs a savings name. Tested Working***************
-double Savings::getTotal(std::string savingsName) throw(std::invalid_argument, std::runtime_error) {
+double Savings::getTotal(std::string savingsName) noexcept(false) {
     //Data fields.
     std::string query = "";//Query to send to database.
     sqlite3* db;//My database file.
@@ -222,7 +222,7 @@ double Savings::getTotal(std::string savingsName) throw(std::invalid_argument, s
 }//End of getTotal
 
 //Returns a list of savings as strings. Tested Working*************
-std::vector<std::string> Savings::getSavingsList() throw(std::runtime_error) {
+std::vector<std::string> Savings::getSavingsList() noexcept(false) {
     //Data fields
     std::string query = "";//Query to send to database.
     sqlite3* db;//My database file.
@@ -264,7 +264,7 @@ std::vector<std::string> Savings::getSavingsList() throw(std::runtime_error) {
 }//End of getSavingsList
 
 //Returns vector of doubles that are transaction amounts. Needs a savings name. Tested Working********************
-std::vector<double> Savings::getSavingsTransactionsList(std::string savingsName) throw(std::invalid_argument, std::runtime_error) {
+std::vector<double> Savings::getSavingsTransactionsList(std::string savingsName) noexcept(false) {
     //Data fields
     std::string query = "";//Query to send to database.
     sqlite3* db;//My database file.
@@ -312,7 +312,7 @@ std::vector<double> Savings::getSavingsTransactionsList(std::string savingsName)
 
 //Mutators
 //Deletes a savings after setting all related transactions to sav_id = NULL. Needs a savings name. Tested Working**************
-void Savings::deleteSavings(std::string savingsName) throw(std::invalid_argument, std::runtime_error) {
+void Savings::deleteSavings(std::string savingsName) noexcept(false) {
     //Datafields
     std::string statement = "";//String being used for database statement.
     sqlite3* db;//My database file.
@@ -357,7 +357,7 @@ void Savings::deleteSavings(std::string savingsName) throw(std::invalid_argument
 }//End of deleteSavings
 
 //Changes a savings goal. Needs savings name and new goal amount. Tested Working************
-void Savings::changeGoal(std::string savingsName, double newGoal) throw(std::invalid_argument, std::runtime_error) {
+void Savings::changeGoal(std::string savingsName, double newGoal) noexcept(false) {
     //Data fields
     std::string dataBaseString = "";//String being used for database statement.
     sqlite3* db;//My database file.
@@ -393,7 +393,7 @@ void Savings::changeGoal(std::string savingsName, double newGoal) throw(std::inv
     }//End of changeGoal.
 
 //Changes a savings total. Adds a transaction to reflect a deposit or withdraw. Needs savings name and new total amount. Tested Working************
-void Savings::changeTotal(std::string savingsName, double newTotal) throw(std::invalid_argument, std::runtime_error) {
+void Savings::changeTotal(std::string savingsName, double newTotal) noexcept(false) {
     //Data fields
     std::string dataBaseString = "";//String being used for database statement.
     sqlite3* db;//My database file.
@@ -470,7 +470,7 @@ void Savings::changeTotal(std::string savingsName, double newTotal) throw(std::i
     }//End of changeGoal.
 
 //Adds a savings. Needs a name and goal. Tested Working************
-void Savings::addSavings(std::string savingsName, double goal) throw(std::invalid_argument, std::runtime_error) {
+void Savings::addSavings(std::string savingsName, double goal) noexcept(false) {
     //Data fields
     std::string dataBaseString = "";//String being used for database statement.
     sqlite3* db;//My database file.
